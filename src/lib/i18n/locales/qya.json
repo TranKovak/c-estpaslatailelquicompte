@@ -145,6 +145,8 @@
   "qr_modal": {
     "title": "Mentë sanya",
     "hint": "Cen i QR-nótë ve ataltë i appëo ná tulya i sanya.",
-    "error": "Um pol carë i QR: {message}"
+    "error": "Um pol carë i QR: {message}",
+    "copy_json": "📋 Lepya JSON (SMS, parma…)",
+    "copied": "✓ Lepyaina!"
   }
 }

@@ -10,6 +10,7 @@
 
   let canvasEl;
   let error = '';
+  let copied = false;
 
   onMount(async () => {
     if (canvasEl && recipe) {
@@ -20,6 +21,13 @@
       }
     }
   });
+
+  async function copyJson() {
+    const { photo: _omit, ...recipeWithoutPhoto } = recipe;
+    await navigator.clipboard.writeText(JSON.stringify(recipeWithoutPhoto));
+    copied = true;
+    setTimeout(() => (copied = false), 2000);
+  }
 
   function close() {
     dispatch('close');
@@ -46,6 +54,10 @@
     {/if}
 
     <p class="recipe-name-label">{recipe.name}</p>
+
+    <button type="button" class="btn btn-secondary copy-btn" on:click={copyJson}>
+      {copied ? $_('qr_modal.copied') : $_('qr_modal.copy_json')}
+    </button>
   </div>
 </div>
 
@@ -67,6 +79,11 @@
     font-weight: 600;
     font-size: 0.9rem;
     color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .copy-btn {
+    width: 100%;
   }
 
   .close-btn {

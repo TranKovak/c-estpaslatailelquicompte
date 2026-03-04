@@ -145,6 +145,8 @@
   "qr_modal": {
     "title": "Share recipe",
     "hint": "Scan this QR code with another instance of the app to import the recipe.",
-    "error": "Could not generate QR code: {message}"
+    "error": "Could not generate QR code: {message}",
+    "copy_json": "📋 Copy JSON (SMS, email…)",
+    "copied": "✓ Copied!"
   }
 }

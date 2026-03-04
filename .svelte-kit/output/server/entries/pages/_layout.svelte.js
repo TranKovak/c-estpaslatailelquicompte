@@ -20,7 +20,7 @@ function _layout($$renderer, $$props) {
     currentLang = langs.find((l) => l.code === store_get($$store_subs ??= {}, "$locale", $locale)) ?? langs[0];
     if (!store_get($$store_subs ??= {}, "$isLoading", $isLoading)) {
       $$renderer2.push("<!--[-->");
-      $$renderer2.push(`<div class="app-shell svelte-12qhfyh"><nav class="navbar svelte-12qhfyh"><div class="nav-bar svelte-12qhfyh"><a href="/" class="nav-brand svelte-12qhfyh">🍞 CPLQ <span class="nav-version svelte-12qhfyh">v${escape_html("1.2.2")}</span></a> <button type="button" class="burger svelte-12qhfyh" aria-label="Menu"${attr("aria-expanded", menuOpen)}>`);
+      $$renderer2.push(`<div class="app-shell svelte-12qhfyh"><nav class="navbar svelte-12qhfyh"><div class="nav-bar svelte-12qhfyh"><a href="/" class="nav-brand svelte-12qhfyh">🍞 CPLQ <span class="nav-version svelte-12qhfyh">v${escape_html("1.2.3")}</span></a> <button type="button" class="burger svelte-12qhfyh" aria-label="Menu"${attr("aria-expanded", menuOpen)}>`);
       if (menuOpen) {
         $$renderer2.push("<!--[-->");
         $$renderer2.push(`✕`);

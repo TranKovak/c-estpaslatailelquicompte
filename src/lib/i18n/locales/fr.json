@@ -145,6 +145,8 @@
   "qr_modal": {
     "title": "Partager la recette",
     "hint": "Scannez ce QR code avec une autre instance de l'app pour importer la recette.",
-    "error": "Impossible de générer le QR code : {message}"
+    "error": "Impossible de générer le QR code : {message}",
+    "copy_json": "📋 Copier le JSON (SMS, email…)",
+    "copied": "✓ Copié !"
   }
 }

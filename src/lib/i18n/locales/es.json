@@ -145,6 +145,8 @@
   "qr_modal": {
     "title": "Compartir receta",
     "hint": "Escanea este QR con otra instancia de la app para importar la receta.",
-    "error": "No se pudo generar el QR: {message}"
+    "error": "No se pudo generar el QR: {message}",
+    "copy_json": "📋 Copiar JSON (SMS, email…)",
+    "copied": "✓ ¡Copiado!"
   }
 }
