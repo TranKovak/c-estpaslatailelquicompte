@@ -5,6 +5,7 @@
   import RecipeForm from '$lib/components/RecipeForm.svelte';
   import { getRecipe, saveRecipe } from '$lib/db.js';
   import { loadRecipes } from '$lib/stores.js';
+  import { _ } from '$lib/i18n/index.js';
 
   let recipe = null;
   let loading = true;
@@ -15,7 +16,7 @@
     const id = $page.params.id;
     recipe = await getRecipe(id);
     if (!recipe) {
-      error = 'Recette introuvable.';
+      error = 'edit.not_found';
     }
     loading = false;
   });
@@ -34,18 +35,18 @@
 </script>
 
 <svelte:head>
-  <title>{recipe ? `Modifier — ${recipe.name}` : 'Modifier la recette'} — CPLQ</title>
+  <title>{recipe ? $_('edit.title', { values: { name: recipe.name } }) : $_('edit.title_generic')} — CPLQ</title>
 </svelte:head>
 
 <div class="page-header">
-  <a href={`/recipe/${$page.params.id}`} class="back-link">← Retour à la recette</a>
-  <h1 class="page-title">Modifier la recette</h1>
+  <a href={`/recipe/${$page.params.id}`} class="back-link">{$_('edit.back')}</a>
+  <h1 class="page-title">{$_('edit.heading')}</h1>
 </div>
 
 {#if loading}
-  <p class="text-muted">Chargement…</p>
+  <p class="text-muted">{$_('edit.loading')}</p>
 {:else if error}
-  <p class="error">{error}</p>
+  <p class="error">{$_(error)}</p>
 {:else}
   <RecipeForm {recipe} on:save={handleSave} {saving} />
 {/if}

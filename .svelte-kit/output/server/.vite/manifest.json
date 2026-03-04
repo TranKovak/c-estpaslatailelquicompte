@@ -44,6 +44,19 @@
       "_false.js"
     ]
   },
+  "_index3.js": {
+    "file": "chunks/index3.js",
+    "name": "index",
+    "imports": [
+      "_index.js"
+    ],
+    "dynamicImports": [
+      "src/lib/i18n/locales/fr.json",
+      "src/lib/i18n/locales/en.json",
+      "src/lib/i18n/locales/es.json",
+      "src/lib/i18n/locales/qya.json"
+    ]
+  },
   "_internal.js": {
     "file": "chunks/internal.js",
     "name": "internal",
@@ -137,6 +150,30 @@
       "_internal.js"
     ]
   },
+  "src/lib/i18n/locales/en.json": {
+    "file": "chunks/en.js",
+    "name": "en",
+    "src": "src/lib/i18n/locales/en.json",
+    "isDynamicEntry": true
+  },
+  "src/lib/i18n/locales/es.json": {
+    "file": "chunks/es.js",
+    "name": "es",
+    "src": "src/lib/i18n/locales/es.json",
+    "isDynamicEntry": true
+  },
+  "src/lib/i18n/locales/fr.json": {
+    "file": "chunks/fr.js",
+    "name": "fr",
+    "src": "src/lib/i18n/locales/fr.json",
+    "isDynamicEntry": true
+  },
+  "src/lib/i18n/locales/qya.json": {
+    "file": "chunks/qya.js",
+    "name": "qya",
+    "src": "src/lib/i18n/locales/qya.json",
+    "isDynamicEntry": true
+  },
   "src/routes/+layout.js": {
     "file": "entries/pages/_layout.js",
     "name": "entries/pages/_layout",
@@ -150,10 +187,11 @@
     "isEntry": true,
     "imports": [
       "_index2.js",
-      "_stores.js"
+      "_stores.js",
+      "_index3.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.gufaj49r.css"
+      "_app/immutable/assets/_layout.BwQx3Dtz.css"
     ]
   },
   "src/routes/+page.svelte": {
@@ -167,7 +205,8 @@
       "_utils.js",
       "_root.js",
       "_state.svelte.js",
-      "_stores2.js"
+      "_stores2.js",
+      "_index3.js"
     ],
     "css": [
       "_app/immutable/assets/_page.nLt4vut3.css"
@@ -179,7 +218,8 @@
     "src": "src/routes/history/+page.svelte",
     "isEntry": true,
     "imports": [
-      "_index2.js"
+      "_index2.js",
+      "_index3.js"
     ],
     "css": [
       "_app/immutable/assets/_page.BmfEOznQ.css"
@@ -197,6 +237,7 @@
       "_root.js",
       "_state.svelte.js",
       "_stores2.js",
+      "_index3.js",
       "_ImportModal.svelte_svelte_type_style_lang.js"
     ],
     "css": [
@@ -215,6 +256,7 @@
       "_root.js",
       "_state.svelte.js",
       "_stores.js",
+      "_index3.js",
       "_stores2.js"
     ],
     "css": [
@@ -232,7 +274,8 @@
       "_exports.js",
       "_utils.js",
       "_root.js",
-      "_state.svelte.js"
+      "_state.svelte.js",
+      "_index3.js"
     ],
     "css": [
       "_app/immutable/assets/_page.Coa22F6D.css"
@@ -249,6 +292,7 @@
       "_utils.js",
       "_root.js",
       "_state.svelte.js",
+      "_index3.js",
       "_stores2.js"
     ],
     "css": [
@@ -264,10 +308,11 @@
     "imports": [
       "_index2.js",
       "_stores2.js",
+      "_index3.js",
       "_ImportModal.svelte_svelte_type_style_lang.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.Dg--Fj3V.css"
+      "_app/immutable/assets/_page.B58q44Hf.css"
     ]
   }
 }

@@ -2,6 +2,10 @@
   import '../app.css';
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
+  import { setupI18n, _, locale } from '$lib/i18n/index.js';
+  import { isLoading } from 'svelte-i18n';
+
+  setupI18n();
 
   let deferredPrompt = null;
   let showInstall = false;
@@ -9,7 +13,6 @@
   let iosHint = false;
 
   onMount(() => {
-    // iOS detection
     isIos = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
 
@@ -42,25 +45,24 @@
   }
 </script>
 
+{#if !$isLoading}
 <div class="app-shell">
   <nav class="navbar">
     <div class="container">
       <a href="/" class="nav-brand">🍞 CPLQ <span class="nav-version">v{__APP_VERSION__}</span></a>
       <div class="nav-links">
-        <a href="/" class:active={$page.url.pathname === '/'}>Recettes</a>
-        <a href="/history" class:active={$page.url.pathname === '/history'}>Historique</a>
-        <a href="/settings" class:active={$page.url.pathname === '/settings'}>Paramètres</a>
+        <a href="/" class:active={$page.url.pathname === '/'}>{$_('nav.recipes')}</a>
+        <a href="/history" class:active={$page.url.pathname === '/history'}>{$_('nav.history')}</a>
+        <a href="/settings" class:active={$page.url.pathname === '/settings'}>{$_('nav.settings')}</a>
         {#if showInstall}
           <button type="button" class="btn-install" on:click={handleInstall}>
-            ⬇ Installer
+            {$_('nav.install')}
           </button>
         {/if}
       </div>
 
       {#if iosHint}
-        <div class="ios-hint">
-          Appuie sur <strong>Partager</strong> puis <strong>Sur l'écran d'accueil</strong>
-        </div>
+        <div class="ios-hint">{$_('ios_hint')}</div>
       {/if}
     </div>
   </nav>
@@ -71,6 +73,7 @@
     </div>
   </main>
 </div>
+{/if}
 
 <style>
   .app-shell {

@@ -1,4 +1,4 @@
-import { s as store_get, h as head, c as ensure_array_like, a as attr_class, e as escape_html, d as attr, u as unsubscribe_stores } from "../../chunks/index2.js";
+import { s as store_get, h as head, e as escape_html, c as ensure_array_like, a as attr_class, d as attr, u as unsubscribe_stores } from "../../chunks/index2.js";
 import "@sveltejs/kit/internal";
 import "../../chunks/exports.js";
 import "../../chunks/utils.js";
@@ -6,22 +6,23 @@ import "@sveltejs/kit/internal/server";
 import "../../chunks/root.js";
 import "../../chunks/state.svelte.js";
 import { r as recipes, a as activeTagFilter, f as filteredRecipes } from "../../chunks/stores2.js";
+import { d as dateLocale, a as $format } from "../../chunks/index3.js";
 function _page($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
     let allTags;
     function formatDate(ts) {
-      return new Date(ts).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
+      return new Date(ts).toLocaleDateString(store_get($$store_subs ??= {}, "$dateLocale", dateLocale), { day: "numeric", month: "short", year: "numeric" });
     }
     allTags = [
       ...new Set(store_get($$store_subs ??= {}, "$recipes", recipes).flatMap((r) => r.tags))
     ].sort();
     head("1uha8ag", $$renderer2, ($$renderer3) => {
       $$renderer3.title(($$renderer4) => {
-        $$renderer4.push(`<title>C'est pas la taille qui compte</title>`);
+        $$renderer4.push(`<title>${escape_html(store_get($$store_subs ??= {}, "$_", $format)("home.title"))}</title>`);
       });
     });
-    $$renderer2.push(`<div class="home-page"><header class="page-header svelte-1uha8ag"><h1 class="page-title svelte-1uha8ag">Mes recettes</h1> <a href="/recipe/new" class="btn btn-primary new-btn svelte-1uha8ag">+ Nouvelle recette</a></header> `);
+    $$renderer2.push(`<div class="home-page"><header class="page-header svelte-1uha8ag"><h1 class="page-title svelte-1uha8ag">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("home.my_recipes"))}</h1> <a href="/recipe/new" class="btn btn-primary new-btn svelte-1uha8ag">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("home.new_recipe"))}</a></header> `);
     if (allTags.length > 0) {
       $$renderer2.push("<!--[-->");
       $$renderer2.push(`<div class="tag-filters svelte-1uha8ag"><!--[-->`);
@@ -35,7 +36,7 @@ function _page($$renderer, $$props) {
       $$renderer2.push(`<!--]--> `);
       if (store_get($$store_subs ??= {}, "$activeTagFilter", activeTagFilter)) {
         $$renderer2.push("<!--[-->");
-        $$renderer2.push(`<button type="button" class="tag clear-filter svelte-1uha8ag">✕ Tout afficher</button>`);
+        $$renderer2.push(`<button type="button" class="tag clear-filter svelte-1uha8ag">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("home.show_all"))}</button>`);
       } else {
         $$renderer2.push("<!--[!-->");
       }
@@ -49,10 +50,10 @@ function _page($$renderer, $$props) {
       $$renderer2.push(`<div class="empty-state card svelte-1uha8ag">`);
       if (store_get($$store_subs ??= {}, "$recipes", recipes).length === 0) {
         $$renderer2.push("<!--[-->");
-        $$renderer2.push(`<p class="empty-icon svelte-1uha8ag">🍞</p> <p class="empty-title svelte-1uha8ag">Aucune recette pour l'instant</p> <p class="text-muted text-sm">Créez votre première recette en cliquant sur "+ Nouvelle recette".</p>`);
+        $$renderer2.push(`<p class="empty-icon svelte-1uha8ag">🍞</p> <p class="empty-title svelte-1uha8ag">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("home.empty_no_recipes"))}</p> <p class="text-muted text-sm">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("home.empty_no_recipes_hint"))}</p>`);
       } else {
         $$renderer2.push("<!--[!-->");
-        $$renderer2.push(`<p class="empty-icon svelte-1uha8ag">🔍</p> <p class="empty-title svelte-1uha8ag">Aucune recette avec ce tag</p> <button type="button" class="btn btn-secondary mt-2">Effacer le filtre</button>`);
+        $$renderer2.push(`<p class="empty-icon svelte-1uha8ag">🔍</p> <p class="empty-title svelte-1uha8ag">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("home.empty_no_tag"))}</p> <button type="button" class="btn btn-secondary mt-2">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("home.clear_filter"))}</button>`);
       }
       $$renderer2.push(`<!--]--></div>`);
     } else {

@@ -3,6 +3,7 @@
   import { importFromCamera, importFromText } from '$lib/qrcode.js';
   import { saveRecipe } from '$lib/db.js';
   import { loadRecipes } from '$lib/stores.js';
+  import { _ } from '$lib/i18n/index.js';
 
   const dispatch = createEventDispatcher();
 
@@ -17,7 +18,6 @@
   let destroyed = false;
 
   function stopActiveStream() {
-    // Stoppe via la référence videoEl (source unique de vérité)
     if (videoEl && videoEl.srcObject) {
       videoEl.srcObject.getTracks().forEach((t) => t.stop());
       videoEl.srcObject = null;
@@ -30,7 +30,7 @@
     scanStarted = true;
     try {
       const recipe = await importFromCamera(videoEl);
-      if (destroyed) return; // composant détruit pendant le scan
+      if (destroyed) return;
       stopActiveStream();
       await importRecipe(recipe);
     } catch (e) {
@@ -55,13 +55,12 @@
   async function importRecipe(recipe) {
     importing = true;
     try {
-      // Réinitialise l'ID pour éviter les conflits
       const toImport = { ...recipe, id: undefined, createdAt: undefined, updatedAt: undefined };
       await saveRecipe(toImport);
       await loadRecipes();
       dispatch('imported', recipe.name);
     } catch (e) {
-      pasteError = 'Erreur lors de l\'import : ' + e.message;
+      pasteError = $_('import_modal.import_error', { values: { message: e.message } });
     } finally {
       importing = false;
     }
@@ -82,53 +81,50 @@
 <div class="modal-overlay" on:click|self={close}>
   <div class="modal-box">
     <div class="modal-header">
-      <span class="modal-title">Importer une recette</span>
+      <span class="modal-title">{$_('import_modal.title')}</span>
       <button type="button" class="btn btn-ghost close-btn" on:click={close}>✕</button>
     </div>
 
-    <!-- Onglets -->
     <div class="tabs">
       <button
         type="button"
         class="tab"
         class:active={activeTab === 'scan'}
         on:click={() => (activeTab = 'scan')}
-      >📷 Scanner QR</button>
+      >{$_('import_modal.tab_scan')}</button>
       <button
         type="button"
         class="tab"
         class:active={activeTab === 'paste'}
         on:click={() => (activeTab = 'paste')}
-      >📋 Coller JSON</button>
+      >{$_('import_modal.tab_paste')}</button>
     </div>
 
-    <!-- Scan -->
     {#if activeTab === 'scan'}
       <div class="scan-panel">
         <video bind:this={videoEl} class="video-feed" muted playsinline></video>
         {#if !scanStarted}
           <button type="button" class="btn btn-primary mt-2 w-full" on:click={startScan} disabled={scanning}>
-            Démarrer la caméra
+            {$_('import_modal.start_camera')}
           </button>
         {/if}
         {#if scanning && !scanError}
-          <p class="text-muted text-sm text-center mt-1">Pointez la caméra vers le QR code…</p>
+          <p class="text-muted text-sm text-center mt-1">{$_('import_modal.scanning_hint')}</p>
         {/if}
         {#if scanError}
           <p class="error mt-1">{scanError}</p>
-          <button type="button" class="btn btn-secondary mt-1 w-full" on:click={startScan}>Réessayer</button>
+          <button type="button" class="btn btn-secondary mt-1 w-full" on:click={startScan}>{$_('import_modal.retry')}</button>
         {/if}
       </div>
     {/if}
 
-    <!-- Paste JSON -->
     {#if activeTab === 'paste'}
       <div class="paste-panel">
-        <label for="paste-json">Coller le JSON de la recette</label>
+        <label for="paste-json">{$_('import_modal.paste_label')}</label>
         <textarea
           id="paste-json"
           bind:value={pasteJson}
-          placeholder="Collez ici le JSON de la recette exportée"
+          placeholder={$_('import_modal.paste_placeholder')}
           rows="8"
         ></textarea>
         {#if pasteError}
@@ -140,7 +136,7 @@
           on:click={handlePaste}
           disabled={importing || !pasteJson.trim()}
         >
-          {importing ? 'Import en cours…' : 'Importer'}
+          {importing ? $_('import_modal.importing') : $_('import_modal.import_btn')}
         </button>
       </div>
     {/if}

@@ -1,4 +1,4 @@
-import { i as fallback, d as attr, j as bind_props, e as escape_html, c as ensure_array_like, b as slot, k as invalid_default_snippet, h as head } from "../../../../chunks/index2.js";
+import { i as fallback, d as attr, j as bind_props, e as escape_html, c as ensure_array_like, b as slot, s as store_get, u as unsubscribe_stores, k as invalid_default_snippet, h as head } from "../../../../chunks/index2.js";
 import "@sveltejs/kit/internal";
 import "../../../../chunks/exports.js";
 import "../../../../chunks/utils.js";
@@ -7,6 +7,7 @@ import "@sveltejs/kit/internal/server";
 import "../../../../chunks/root.js";
 import "../../../../chunks/state.svelte.js";
 /* empty css                                                          */
+import { a as $format } from "../../../../chunks/index3.js";
 import "idb";
 import "../../../../chunks/stores2.js";
 function IngredientRow($$renderer, $$props) {
@@ -96,6 +97,7 @@ function DragList($$renderer, $$props) {
 }
 function RecipeForm($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
+    var $$store_subs;
     let recipe = fallback(
       $$props["recipe"],
       () => ({
@@ -112,16 +114,16 @@ function RecipeForm($$renderer, $$props) {
       true
     );
     let saving = fallback($$props["saving"], false);
-    $$renderer2.push(`<form class="recipe-form svelte-1umens4"><div class="form-group"><label for="recipe-name">Nom de la recette *</label> <input id="recipe-name" type="text"${attr("value", recipe.name)} placeholder="Ex: Pain de campagne" required=""/></div> <div class="form-group"><label>Tags</label> `);
+    $$renderer2.push(`<form class="recipe-form svelte-1umens4"><div class="form-group"><label for="recipe-name">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.name_label"))}</label> <input id="recipe-name" type="text"${attr("value", recipe.name)}${attr("placeholder", store_get($$store_subs ??= {}, "$_", $format)("form.name_placeholder"))} required=""/></div> <div class="form-group"><label>${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.tags_label"))}</label> `);
     TagInput($$renderer2, { tags: recipe.tags });
-    $$renderer2.push(`<!----></div> <div class="form-row svelte-1umens4"><div class="form-group"><label for="evap-rate">Taux d'évaporation (%)</label> <input id="evap-rate" type="number"${attr("value", recipe.evaporationRate)} min="0" max="50" step="0.5"/></div> <div class="form-group"><label for="proofing-time">Temps de pousse</label> <input id="proofing-time" type="text"${attr("value", recipe.proofingTime)} placeholder="Ex: 2h"/></div> <div class="form-group"><label for="baking-time">Temps de cuisson</label> <input id="baking-time" type="text"${attr("value", recipe.bakingTime)} placeholder="Ex: 25 min à 240°C"/></div></div> <div class="form-group"><label for="notes">Notes libres</label> <textarea id="notes" placeholder="Conseils, astuces…" rows="3">`);
+    $$renderer2.push(`<!----></div> <div class="form-row svelte-1umens4"><div class="form-group"><label for="evap-rate">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.evap_label"))}</label> <input id="evap-rate" type="number"${attr("value", recipe.evaporationRate)} min="0" max="50" step="0.5"/></div> <div class="form-group"><label for="proofing-time">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.proofing_label"))}</label> <input id="proofing-time" type="text"${attr("value", recipe.proofingTime)}${attr("placeholder", store_get($$store_subs ??= {}, "$_", $format)("form.proofing_placeholder"))}/></div> <div class="form-group"><label for="baking-time">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.baking_label"))}</label> <input id="baking-time" type="text"${attr("value", recipe.bakingTime)}${attr("placeholder", store_get($$store_subs ??= {}, "$_", $format)("form.baking_placeholder"))}/></div></div> <div class="form-group"><label for="notes">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.notes_label"))}</label> <textarea id="notes"${attr("placeholder", store_get($$store_subs ??= {}, "$_", $format)("form.notes_placeholder"))} rows="3">`);
     const $$body = escape_html(recipe.notes);
     if ($$body) {
       $$renderer2.push(`${$$body}`);
     }
-    $$renderer2.push(`</textarea></div> <div class="form-group"><label>Photo</label> `);
+    $$renderer2.push(`</textarea></div> <div class="form-group"><label>${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.photo_label"))}</label> `);
     PhotoPicker($$renderer2, { value: recipe.photo });
-    $$renderer2.push(`<!----></div> <hr/> <div class="section-title">Ingrédients (% boulangers)</div> `);
+    $$renderer2.push(`<!----></div> <hr/> <div class="section-title">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.ingredients_title"))}</div> `);
     DragList($$renderer2, {
       items: recipe.ingredients,
       children: invalid_default_snippet,
@@ -133,10 +135,10 @@ function RecipeForm($$renderer, $$props) {
         }
       }
     });
-    $$renderer2.push(`<!----> <button type="button" class="btn btn-secondary add-btn svelte-1umens4">+ Ajouter un ingrédient</button> <hr/> <div class="section-title">Étapes</div> `);
+    $$renderer2.push(`<!----> <button type="button" class="btn btn-secondary add-btn svelte-1umens4">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.add_ingredient"))}</button> <hr/> <div class="section-title">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.steps_title"))}</div> `);
     if (recipe.steps.length === 0) {
       $$renderer2.push("<!--[-->");
-      $$renderer2.push(`<p class="text-muted text-sm mb-1">Aucune étape. Ajoutez-en une ci-dessous.</p>`);
+      $$renderer2.push(`<p class="text-muted text-sm mb-1">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.no_steps"))}</p>`);
     } else {
       $$renderer2.push("<!--[!-->");
       DragList($$renderer2, {
@@ -151,21 +153,24 @@ function RecipeForm($$renderer, $$props) {
         }
       });
     }
-    $$renderer2.push(`<!--]--> <button type="button" class="btn btn-secondary add-btn svelte-1umens4">+ Ajouter une étape</button> <hr/> <div class="form-actions svelte-1umens4"><a href="/" class="btn btn-ghost">Annuler</a> <button type="submit" class="btn btn-primary"${attr("disabled", saving || !recipe.name.trim(), true)}>${escape_html(saving ? "Enregistrement…" : "Enregistrer")}</button></div></form>`);
+    $$renderer2.push(`<!--]--> <button type="button" class="btn btn-secondary add-btn svelte-1umens4">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.add_step"))}</button> <hr/> <div class="form-actions svelte-1umens4"><a href="/" class="btn btn-ghost">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("form.cancel"))}</a> <button type="submit" class="btn btn-primary"${attr("disabled", saving || !recipe.name.trim(), true)}>${escape_html(saving ? store_get($$store_subs ??= {}, "$_", $format)("form.saving") : store_get($$store_subs ??= {}, "$_", $format)("form.save"))}</button></div></form>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
     bind_props($$props, { recipe, saving });
   });
 }
 function _page($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
+    var $$store_subs;
     let saving = false;
     head("n4r614", $$renderer2, ($$renderer3) => {
       $$renderer3.title(($$renderer4) => {
-        $$renderer4.push(`<title>Nouvelle recette — CPLQ</title>`);
+        $$renderer4.push(`<title>${escape_html(store_get($$store_subs ??= {}, "$_", $format)("new.title"))} — CPLQ</title>`);
       });
     });
-    $$renderer2.push(`<div class="page-header svelte-n4r614"><a href="/" class="back-link svelte-n4r614">← Retour</a> <h1 class="page-title svelte-n4r614">Nouvelle recette</h1></div> `);
+    $$renderer2.push(`<div class="page-header svelte-n4r614"><a href="/" class="back-link svelte-n4r614">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("new.back"))}</a> <h1 class="page-title svelte-n4r614">${escape_html(store_get($$store_subs ??= {}, "$_", $format)("new.heading"))}</h1></div> `);
     RecipeForm($$renderer2, { saving });
     $$renderer2.push(`<!---->`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
 export {

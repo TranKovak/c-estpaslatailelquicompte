@@ -1,6 +1,8 @@
 <script>
   import { onMount } from 'svelte';
   import { getHistory, deleteHistoryEntry } from '$lib/db.js';
+  import { _, dateLocale } from '$lib/i18n/index.js';
+  import { get } from 'svelte/store';
 
   let entries = [];
   let loading = true;
@@ -12,13 +14,13 @@
   });
 
   async function handleDelete(id) {
-    if (!confirm('Supprimer cette fournée de l\'historique ?')) return;
+    if (!confirm(get(_)('history.confirm_delete'))) return;
     await deleteHistoryEntry(id);
     entries = entries.filter((e) => e.id !== id);
   }
 
   function formatDate(ts) {
-    return new Date(ts).toLocaleDateString('fr-FR', {
+    return new Date(ts).toLocaleDateString($dateLocale, {
       weekday: 'short',
       day: 'numeric',
       month: 'short',
@@ -28,18 +30,18 @@
 </script>
 
 <svelte:head>
-  <title>Historique des fournées — CPLQ</title>
+  <title>{$_('history.title')} — CPLQ</title>
 </svelte:head>
 
-<h1 class="page-title">Historique des fournées</h1>
+<h1 class="page-title">{$_('history.title')}</h1>
 
 {#if loading}
-  <p class="text-muted">Chargement…</p>
+  <p class="text-muted">{$_('history.loading')}</p>
 {:else if entries.length === 0}
   <div class="empty-state card">
     <p class="empty-icon">📓</p>
-    <p class="empty-title">Aucune fournée enregistrée</p>
-    <p class="text-muted text-sm">Utilisez "Sauvegarder la fournée" depuis une recette pour conserver vos résultats.</p>
+    <p class="empty-title">{$_('history.empty_title')}</p>
+    <p class="text-muted text-sm">{$_('history.empty_hint')}</p>
   </div>
 {:else}
   <div class="history-list">
@@ -54,17 +56,17 @@
             type="button"
             class="btn btn-danger btn-sm"
             on:click={() => handleDelete(entry.id)}
-            aria-label="Supprimer cette fournée"
-          >Suppr.</button>
+            aria-label={$_('history.delete_btn')}
+          >{$_('history.delete_btn')}</button>
         </div>
 
         <div class="history-stats">
           <div class="stat">
-            <span class="stat-label">Pain</span>
+            <span class="stat-label">{$_('history.bread')}</span>
             <strong>{entry.targetBreadWeight} g</strong>
           </div>
           <div class="stat">
-            <span class="stat-label">Farine</span>
+            <span class="stat-label">{$_('history.flour')}</span>
             <strong>{entry.flourWeight} g</strong>
           </div>
         </div>

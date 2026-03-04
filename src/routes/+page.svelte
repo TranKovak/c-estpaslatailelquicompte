@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import { recipes, filteredRecipes, activeTagFilter, loadRecipes } from '$lib/stores.js';
+  import { _, dateLocale } from '$lib/i18n/index.js';
 
   onMount(() => {
     loadRecipes();
@@ -15,18 +16,18 @@
   }
 
   function formatDate(ts) {
-    return new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+    return new Date(ts).toLocaleDateString($dateLocale, { day: 'numeric', month: 'short', year: 'numeric' });
   }
 </script>
 
 <svelte:head>
-  <title>C'est pas la taille qui compte</title>
+  <title>{$_('home.title')}</title>
 </svelte:head>
 
 <div class="home-page">
   <header class="page-header">
-    <h1 class="page-title">Mes recettes</h1>
-    <a href="/recipe/new" class="btn btn-primary new-btn">+ Nouvelle recette</a>
+    <h1 class="page-title">{$_('home.my_recipes')}</h1>
+    <a href="/recipe/new" class="btn btn-primary new-btn">{$_('home.new_recipe')}</a>
   </header>
 
   <!-- Filtres par tags -->
@@ -41,7 +42,7 @@
         >{tag}</button>
       {/each}
       {#if $activeTagFilter}
-        <button type="button" class="tag clear-filter" on:click={() => activeTagFilter.set(null)}>✕ Tout afficher</button>
+        <button type="button" class="tag clear-filter" on:click={() => activeTagFilter.set(null)}>{$_('home.show_all')}</button>
       {/if}
     </div>
   {/if}
@@ -51,13 +52,13 @@
     <div class="empty-state card">
       {#if $recipes.length === 0}
         <p class="empty-icon">🍞</p>
-        <p class="empty-title">Aucune recette pour l'instant</p>
-        <p class="text-muted text-sm">Créez votre première recette en cliquant sur "+ Nouvelle recette".</p>
+        <p class="empty-title">{$_('home.empty_no_recipes')}</p>
+        <p class="text-muted text-sm">{$_('home.empty_no_recipes_hint')}</p>
       {:else}
         <p class="empty-icon">🔍</p>
-        <p class="empty-title">Aucune recette avec ce tag</p>
+        <p class="empty-title">{$_('home.empty_no_tag')}</p>
         <button type="button" class="btn btn-secondary mt-2" on:click={() => activeTagFilter.set(null)}>
-          Effacer le filtre
+          {$_('home.clear_filter')}
         </button>
       {/if}
     </div>

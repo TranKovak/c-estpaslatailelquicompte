@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher, onMount } from 'svelte';
   import { generateRecipeQR } from '$lib/qrcode.js';
+  import { _ } from '$lib/i18n/index.js';
 
   /** @type {import('../db.js').Recipe} */
   export let recipe;
@@ -15,7 +16,7 @@
       try {
         await generateRecipeQR(recipe, canvasEl);
       } catch (e) {
-        error = 'Impossible de générer le QR code : ' + e.message;
+        error = $_('qr_modal.error', { values: { message: e.message } });
       }
     }
   });
@@ -30,11 +31,11 @@
 <div class="modal-overlay" on:click|self={close}>
   <div class="modal-box">
     <div class="modal-header">
-      <span class="modal-title">Partager la recette</span>
+      <span class="modal-title">{$_('qr_modal.title')}</span>
       <button type="button" class="btn btn-ghost close-btn" on:click={close}>✕</button>
     </div>
 
-    <p class="text-muted text-sm mb-2">Scannez ce QR code avec une autre instance de l'app pour importer la recette.</p>
+    <p class="text-muted text-sm mb-2">{$_('qr_modal.hint')}</p>
 
     {#if error}
       <p class="error">{error}</p>

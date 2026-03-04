@@ -1,6 +1,8 @@
 <script>
   import { exportLibrary, importLibrary } from '$lib/export.js';
   import { loadRecipes } from '$lib/stores.js';
+  import { _, locale } from '$lib/i18n/index.js';
+  import { get } from 'svelte/store';
   import ImportModal from '$lib/components/ImportModal.svelte';
 
   let exporting = false;
@@ -10,12 +12,19 @@
   let fileInput;
   let showImportModal = false;
 
+  const languages = [
+    { code: 'fr', label: 'Français' },
+    { code: 'en', label: 'English' },
+    { code: 'es', label: 'Español' },
+    { code: 'qya', label: 'Quenya' }
+  ];
+
   async function handleExport() {
     exporting = true;
     try {
       await exportLibrary();
     } catch (e) {
-      alert('Erreur lors de l\'export : ' + e.message);
+      alert(get(_)('settings.export_error', { values: { message: e.message } }));
     } finally {
       exporting = false;
     }
@@ -30,9 +39,9 @@
     try {
       const count = await importLibrary(file);
       await loadRecipes();
-      importStatus = `${count} recette${count > 1 ? 's' : ''} importée${count > 1 ? 's' : ''} avec succès !`;
+      importStatus = get(_)('settings.import_success', { values: { count } });
     } catch (err) {
-      importError = 'Erreur : ' + err.message;
+      importError = get(_)('settings.import_error', { values: { message: err.message } });
     } finally {
       importing = false;
       if (fileInput) fileInput.value = '';
@@ -41,14 +50,30 @@
 </script>
 
 <svelte:head>
-  <title>Paramètres — CPLQ</title>
+  <title>{$_('settings.title')} — CPLQ</title>
 </svelte:head>
 
-<h1 class="page-title">Paramètres</h1>
+<h1 class="page-title">{$_('settings.title')}</h1>
 
+<!-- Langue -->
 <div class="settings-section card">
-  <h2 class="section-heading">Bibliothèque de recettes</h2>
-  <p class="text-muted text-sm mb-2">Exportez ou importez toutes vos recettes au format JSON. L'import ne supprime pas les recettes existantes.</p>
+  <h2 class="section-heading">{$_('settings.language_heading')}</h2>
+  <div class="lang-btns">
+    {#each languages as lang}
+      <button
+        type="button"
+        class="lang-btn"
+        class:active={$locale === lang.code}
+        on:click={() => locale.set(lang.code)}
+      >{lang.label}</button>
+    {/each}
+  </div>
+</div>
+
+<!-- Bibliothèque -->
+<div class="settings-section card mt-2">
+  <h2 class="section-heading">{$_('settings.library_heading')}</h2>
+  <p class="text-muted text-sm mb-2">{$_('settings.library_hint')}</p>
 
   <div class="settings-actions">
     <button
@@ -57,11 +82,11 @@
       on:click={handleExport}
       disabled={exporting}
     >
-      {exporting ? 'Export en cours…' : '⬇ Exporter toutes les recettes'}
+      {exporting ? $_('settings.exporting') : $_('settings.export_btn')}
     </button>
 
     <label class="btn btn-secondary import-label" for="import-file">
-      {importing ? 'Import en cours…' : '⬆ Importer des recettes'}
+      {importing ? $_('settings.importing') : $_('settings.import_btn')}
       <input
         bind:this={fileInput}
         id="import-file"
@@ -83,19 +108,20 @@
   {/if}
 </div>
 
+<!-- QR -->
 <div class="settings-section card mt-2">
-  <h2 class="section-heading">Partage QR code</h2>
-  <p class="text-muted text-sm mb-2">Importez une recette depuis un QR code partagé par un autre utilisateur.</p>
+  <h2 class="section-heading">{$_('settings.qr_heading')}</h2>
+  <p class="text-muted text-sm mb-2">{$_('settings.qr_hint')}</p>
   <button type="button" class="btn btn-ghost" on:click={() => (showImportModal = true)}>
-    📷 Importer depuis QR code ou JSON
+    {$_('settings.qr_btn')}
   </button>
 </div>
 
+<!-- À propos -->
 <div class="settings-section card mt-2">
-  <h2 class="section-heading">À propos</h2>
+  <h2 class="section-heading">{$_('settings.about_heading')}</h2>
   <p class="text-muted text-sm">
-    <strong>C'est pas la taille qui compte</strong> — Calculateur de recettes en pourcentages boulangers.<br />
-    PWA 100% offline. Vos données restent sur votre appareil.
+    <strong>C'est pas la taille qui compte</strong> — {$_('settings.about_text')}
   </p>
 </div>
 
@@ -105,7 +131,7 @@
     on:imported={async (e) => {
       showImportModal = false;
       await loadRecipes();
-      importStatus = `Recette "${e.detail}" importée !`;
+      importStatus = get(_)('settings.imported', { values: { name: e.detail } });
     }}
   />
 {/if}
@@ -125,6 +151,30 @@
     font-size: 1.05rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+  }
+
+  .lang-btns {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .lang-btn {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.4rem 0.9rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .lang-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    font-weight: 600;
   }
 
   .settings-actions {

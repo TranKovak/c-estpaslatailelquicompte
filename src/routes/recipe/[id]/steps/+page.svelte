@@ -4,6 +4,7 @@
   import { goto } from '$app/navigation';
   import { getRecipe } from '$lib/db.js';
   import { calculateFromBreadWeight } from '$lib/calculator.js';
+  import { _ } from '$lib/i18n/index.js';
 
   let recipe = null;
   let loading = true;
@@ -19,7 +20,6 @@
     try {
       wakeLock = await navigator.wakeLock.request('screen');
     } catch (e) {
-      // Wake Lock non disponible (hors HTTPS, Firefox Android, etc.)
       console.warn('Wake Lock non disponible :', e.message);
     }
   }
@@ -46,7 +46,7 @@
 
     recipe = await getRecipe(id);
     if (!recipe) {
-      error = 'Recette introuvable.';
+      error = 'recipe.not_found';
       loading = false;
       return;
     }
@@ -76,18 +76,18 @@
 </script>
 
 <svelte:head>
-  <title>{recipe ? `Pas-à-pas — ${recipe.name}` : 'Pas-à-pas'} — CPLQ</title>
+  <title>{recipe ? $_('steps.title', { values: { name: recipe.name } }) : $_('steps.title_generic')} — CPLQ</title>
 </svelte:head>
 
 {#if loading}
-  <p class="text-muted">Chargement…</p>
+  <p class="text-muted">{$_('steps.loading')}</p>
 {:else if error}
-  <p class="error">{error}</p>
+  <p class="error">{$_(error)}</p>
 {:else if !recipe.steps || recipe.steps.length === 0}
   <div class="empty-steps">
-    <p>Cette recette n'a pas d'étapes.</p>
+    <p>{$_('steps.no_steps')}</p>
     <button type="button" class="btn btn-secondary mt-2" on:click={() => goto(`/recipe/${recipe.id}`)}>
-      ← Retour
+      {$_('steps.back')}
     </button>
   </div>
 {:else}
@@ -95,7 +95,7 @@
 
     <!-- Récapitulatif des quantités (toujours visible) -->
     <div class="summary-bar card">
-      <div class="summary-title">Quantités ({calcResult?.breadWeight ?? '?'} g de pain)</div>
+      <div class="summary-title">{$_('steps.quantities', { values: { weight: calcResult?.breadWeight ?? '?' } })}</div>
       <div class="summary-ingredients">
         {#each (calcResult?.ingredients ?? []) as ing}
           <div class="summary-ing">
@@ -107,10 +107,10 @@
     </div>
 
     <!-- Barre de progression -->
-    <div class="progress-bar-wrapper" aria-label={`Étape ${currentStep + 1} sur ${totalSteps}`}>
+    <div class="progress-bar-wrapper" aria-label={$_('steps.step_label', { values: { current: currentStep + 1, total: totalSteps } })}>
       <div class="progress-bar" style="width: {progress}%"></div>
     </div>
-    <p class="step-counter text-muted text-sm text-center">Étape {currentStep + 1} / {totalSteps}</p>
+    <p class="step-counter text-muted text-sm text-center">{$_('steps.step_counter', { values: { current: currentStep + 1, total: totalSteps } })}</p>
 
     <!-- Étape courante -->
     <div class="step-display card">
@@ -124,27 +124,27 @@
         class="btn btn-secondary nav-btn"
         on:click={prevStep}
         disabled={currentStep === 0}
-        aria-label="Étape précédente"
-      >← Préc.</button>
+        aria-label={$_('steps.prev')}
+      >{$_('steps.prev')}</button>
 
       {#if currentStep === totalSteps - 1}
         <button
           type="button"
           class="btn btn-primary nav-btn finish-btn"
           on:click={() => goto(`/recipe/${recipe.id}`)}
-        >✓ Terminé !</button>
+        >{$_('steps.finish')}</button>
       {:else}
         <button
           type="button"
           class="btn btn-primary nav-btn"
           on:click={nextStep}
-          aria-label="Étape suivante"
-        >Suiv. →</button>
+          aria-label={$_('steps.next')}
+        >{$_('steps.next')}</button>
       {/if}
     </div>
 
     <div class="text-center mt-2">
-      <a href={`/recipe/${recipe.id}`} class="text-muted text-sm">Quitter le mode pas-à-pas</a>
+      <a href={`/recipe/${recipe.id}`} class="text-muted text-sm">{$_('steps.quit')}</a>
     </div>
 
   </div>

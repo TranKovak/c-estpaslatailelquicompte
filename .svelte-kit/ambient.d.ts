@@ -28,6 +28,7 @@
 declare module '$env/static/private' {
 	export const SHELL: string;
 	export const npm_command: string;
+	export const COREPACK_ENABLE_AUTO_PIN: string;
 	export const GHOSTTY_BIN_DIR: string;
 	export const npm_config_userconfig: string;
 	export const COLORTERM: string;
@@ -58,13 +59,15 @@ declare module '$env/static/private' {
 	export const EDITOR: string;
 	export const XDG_SEAT: string;
 	export const PWD: string;
-	export const LOGNAME: string;
 	export const XDG_SESSION_DESKTOP: string;
+	export const LOGNAME: string;
 	export const XDG_SESSION_TYPE: string;
 	export const npm_config_init_module: string;
 	export const SYSTEMD_EXEC_PID: string;
 	export const _: string;
+	export const NoDefaultCurrentDirectoryInExePath: string;
 	export const TERMINAL: string;
+	export const CLAUDECODE: string;
 	export const QT_STYLE_OVERRIDE: string;
 	export const MOTD_SHOWN: string;
 	export const GHOSTTY_SHELL_FEATURES: string;
@@ -82,8 +85,8 @@ declare module '$env/static/private' {
 	export const BAT_THEME: string;
 	export const INIT_CWD: string;
 	export const STARSHIP_SESSION_KEY: string;
-	export const QT_QPA_PLATFORM: string;
 	export const UWSM_WAIT_VARNAMES: string;
+	export const QT_QPA_PLATFORM: string;
 	export const __MISE_ORIG_PATH: string;
 	export const XDG_CACHE_HOME: string;
 	export const npm_lifecycle_script: string;
@@ -91,8 +94,8 @@ declare module '$env/static/private' {
 	export const npm_config_npm_version: string;
 	export const GHOSTTY_RESOURCES_DIR: string;
 	export const XDG_SESSION_CLASS: string;
-	export const TERM: string;
 	export const TERMINFO: string;
+	export const TERM: string;
 	export const npm_package_name: string;
 	export const npm_config_prefix: string;
 	export const USER: string;
@@ -105,14 +108,17 @@ declare module '$env/static/private' {
 	export const npm_lifecycle_event: string;
 	export const SHLVL: string;
 	export const MOZ_ENABLE_WAYLAND: string;
+	export const GIT_EDITOR: string;
 	export const QT_IM_MODULE: string;
 	export const XDG_VTNR: string;
 	export const XDG_SESSION_ID: string;
 	export const MANAGERPIDFDID: string;
 	export const npm_config_user_agent: string;
+	export const OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE: string;
 	export const XDG_STATE_HOME: string;
 	export const npm_execpath: string;
 	export const XDG_RUNTIME_DIR: string;
+	export const CLAUDE_CODE_ENTRYPOINT: string;
 	export const DEBUGINFOD_URLS: string;
 	export const npm_package_json: string;
 	export const MISE_SHELL: string;
@@ -125,8 +131,8 @@ declare module '$env/static/private' {
 	export const DBUS_SESSION_BUS_ADDRESS: string;
 	export const npm_config_global_prefix: string;
 	export const MAIL: string;
-	export const GUM_CONFIRM_UNSELECTED_FOREGROUND: string;
 	export const UWSM_FINALIZE_VARNAMES: string;
+	export const GUM_CONFIRM_UNSELECTED_FOREGROUND: string;
 	export const GUM_CONFIRM_UNSELECTED_BACKGROUND: string;
 	export const npm_node_execpath: string;
 	export const OLDPWD: string;
@@ -165,6 +171,7 @@ declare module '$env/dynamic/private' {
 	export const env: {
 		SHELL: string;
 		npm_command: string;
+		COREPACK_ENABLE_AUTO_PIN: string;
 		GHOSTTY_BIN_DIR: string;
 		npm_config_userconfig: string;
 		COLORTERM: string;
@@ -195,13 +202,15 @@ declare module '$env/dynamic/private' {
 		EDITOR: string;
 		XDG_SEAT: string;
 		PWD: string;
-		LOGNAME: string;
 		XDG_SESSION_DESKTOP: string;
+		LOGNAME: string;
 		XDG_SESSION_TYPE: string;
 		npm_config_init_module: string;
 		SYSTEMD_EXEC_PID: string;
 		_: string;
+		NoDefaultCurrentDirectoryInExePath: string;
 		TERMINAL: string;
+		CLAUDECODE: string;
 		QT_STYLE_OVERRIDE: string;
 		MOTD_SHOWN: string;
 		GHOSTTY_SHELL_FEATURES: string;
@@ -219,8 +228,8 @@ declare module '$env/dynamic/private' {
 		BAT_THEME: string;
 		INIT_CWD: string;
 		STARSHIP_SESSION_KEY: string;
-		QT_QPA_PLATFORM: string;
 		UWSM_WAIT_VARNAMES: string;
+		QT_QPA_PLATFORM: string;
 		__MISE_ORIG_PATH: string;
 		XDG_CACHE_HOME: string;
 		npm_lifecycle_script: string;
@@ -228,8 +237,8 @@ declare module '$env/dynamic/private' {
 		npm_config_npm_version: string;
 		GHOSTTY_RESOURCES_DIR: string;
 		XDG_SESSION_CLASS: string;
-		TERM: string;
 		TERMINFO: string;
+		TERM: string;
 		npm_package_name: string;
 		npm_config_prefix: string;
 		USER: string;
@@ -242,14 +251,17 @@ declare module '$env/dynamic/private' {
 		npm_lifecycle_event: string;
 		SHLVL: string;
 		MOZ_ENABLE_WAYLAND: string;
+		GIT_EDITOR: string;
 		QT_IM_MODULE: string;
 		XDG_VTNR: string;
 		XDG_SESSION_ID: string;
 		MANAGERPIDFDID: string;
 		npm_config_user_agent: string;
+		OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE: string;
 		XDG_STATE_HOME: string;
 		npm_execpath: string;
 		XDG_RUNTIME_DIR: string;
+		CLAUDE_CODE_ENTRYPOINT: string;
 		DEBUGINFOD_URLS: string;
 		npm_package_json: string;
 		MISE_SHELL: string;
@@ -262,8 +274,8 @@ declare module '$env/dynamic/private' {
 		DBUS_SESSION_BUS_ADDRESS: string;
 		npm_config_global_prefix: string;
 		MAIL: string;
-		GUM_CONFIRM_UNSELECTED_FOREGROUND: string;
 		UWSM_FINALIZE_VARNAMES: string;
+		GUM_CONFIRM_UNSELECTED_FOREGROUND: string;
 		GUM_CONFIRM_UNSELECTED_BACKGROUND: string;
 		npm_node_execpath: string;
 		OLDPWD: string;

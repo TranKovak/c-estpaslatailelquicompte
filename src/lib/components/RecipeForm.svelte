@@ -5,6 +5,7 @@
   import TagInput from './TagInput.svelte';
   import PhotoPicker from './PhotoPicker.svelte';
   import DragList from './DragList.svelte';
+  import { _ } from '$lib/i18n/index.js';
 
   /** @type {import('../db.js').Recipe} */
   export let recipe = {
@@ -72,26 +73,25 @@
 
 <form on:submit|preventDefault={handleSubmit} class="recipe-form">
 
-  <!-- Informations générales -->
   <div class="form-group">
-    <label for="recipe-name">Nom de la recette *</label>
+    <label for="recipe-name">{$_('form.name_label')}</label>
     <input
       id="recipe-name"
       type="text"
       bind:value={recipe.name}
-      placeholder="Ex: Pain de campagne"
+      placeholder={$_('form.name_placeholder')}
       required
     />
   </div>
 
   <div class="form-group">
-    <label>Tags</label>
+    <label>{$_('form.tags_label')}</label>
     <TagInput tags={recipe.tags} on:change={handleTagChange} />
   </div>
 
   <div class="form-row">
     <div class="form-group">
-      <label for="evap-rate">Taux d'évaporation (%)</label>
+      <label for="evap-rate">{$_('form.evap_label')}</label>
       <input
         id="evap-rate"
         type="number"
@@ -102,39 +102,38 @@
       />
     </div>
     <div class="form-group">
-      <label for="proofing-time">Temps de pousse</label>
+      <label for="proofing-time">{$_('form.proofing_label')}</label>
       <input
         id="proofing-time"
         type="text"
         bind:value={recipe.proofingTime}
-        placeholder="Ex: 2h"
+        placeholder={$_('form.proofing_placeholder')}
       />
     </div>
     <div class="form-group">
-      <label for="baking-time">Temps de cuisson</label>
+      <label for="baking-time">{$_('form.baking_label')}</label>
       <input
         id="baking-time"
         type="text"
         bind:value={recipe.bakingTime}
-        placeholder="Ex: 25 min à 240°C"
+        placeholder={$_('form.baking_placeholder')}
       />
     </div>
   </div>
 
   <div class="form-group">
-    <label for="notes">Notes libres</label>
-    <textarea id="notes" bind:value={recipe.notes} placeholder="Conseils, astuces…" rows="3"></textarea>
+    <label for="notes">{$_('form.notes_label')}</label>
+    <textarea id="notes" bind:value={recipe.notes} placeholder={$_('form.notes_placeholder')} rows="3"></textarea>
   </div>
 
   <div class="form-group">
-    <label>Photo</label>
+    <label>{$_('form.photo_label')}</label>
     <PhotoPicker value={recipe.photo} on:change={handlePhotoChange} />
   </div>
 
   <hr />
 
-  <!-- Ingrédients -->
-  <div class="section-title">Ingrédients (% boulangers)</div>
+  <div class="section-title">{$_('form.ingredients_title')}</div>
 
   <DragList items={recipe.ingredients} on:reorder={handleIngredientsReorder}>
     <svelte:fragment let:item let:index>
@@ -148,16 +147,15 @@
   </DragList>
 
   <button type="button" class="btn btn-secondary add-btn" on:click={addIngredient}>
-    + Ajouter un ingrédient
+    {$_('form.add_ingredient')}
   </button>
 
   <hr />
 
-  <!-- Étapes -->
-  <div class="section-title">Étapes</div>
+  <div class="section-title">{$_('form.steps_title')}</div>
 
   {#if recipe.steps.length === 0}
-    <p class="text-muted text-sm mb-1">Aucune étape. Ajoutez-en une ci-dessous.</p>
+    <p class="text-muted text-sm mb-1">{$_('form.no_steps')}</p>
   {:else}
     <DragList items={recipe.steps} on:reorder={handleStepsReorder}>
       <svelte:fragment let:item let:index>
@@ -172,16 +170,15 @@
   {/if}
 
   <button type="button" class="btn btn-secondary add-btn" on:click={addStep}>
-    + Ajouter une étape
+    {$_('form.add_step')}
   </button>
 
   <hr />
 
-  <!-- Actions -->
   <div class="form-actions">
-    <a href="/" class="btn btn-ghost">Annuler</a>
+    <a href="/" class="btn btn-ghost">{$_('form.cancel')}</a>
     <button type="submit" class="btn btn-primary" disabled={saving || !recipe.name.trim()}>
-      {saving ? 'Enregistrement…' : 'Enregistrer'}
+      {saving ? $_('form.saving') : $_('form.save')}
     </button>
   </div>
 

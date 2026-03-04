@@ -5,6 +5,8 @@
   import { getRecipe, deleteRecipe, saveHistoryEntry, saveRecipe } from '$lib/db.js';
   import { calculateFromBreadWeight, calculateFromFlourWeight } from '$lib/calculator.js';
   import { loadRecipes } from '$lib/stores.js';
+  import { _, dateLocale } from '$lib/i18n/index.js';
+  import { get } from 'svelte/store';
   import QRModal from '$lib/components/QRModal.svelte';
   import ImportModal from '$lib/components/ImportModal.svelte';
 
@@ -47,7 +49,7 @@
     const newRecipe = {
       ...recipe,
       id: undefined,
-      name: recipe.name + ' (essai)',
+      name: recipe.name + get(_)('recipe.trial_suffix'),
       ingredients: trialIngredients,
       createdAt: undefined,
       updatedAt: undefined
@@ -78,7 +80,7 @@
     historyNote = '';
     historyPhoto = null;
     savingHistory = false;
-    alert('Fournée sauvegardée dans l\'historique !');
+    alert(get(_)('recipe.batch_saved'));
   }
 
   // QR / Import
@@ -87,7 +89,7 @@
 
   // Suppression
   async function handleDelete() {
-    if (!confirm(`Supprimer la recette "${recipe.name}" ? Cette action est irréversible.`)) return;
+    if (!confirm(get(_)('recipe.confirm_delete', { values: { name: recipe.name } }))) return;
     await deleteRecipe(recipe.id);
     await loadRecipes();
     goto('/');
@@ -96,13 +98,13 @@
   onMount(async () => {
     const id = $page.params.id;
     recipe = await getRecipe(id);
-    if (!recipe) error = 'Recette introuvable.';
+    if (!recipe) error = 'recipe.not_found';
     loading = false;
   });
 
   function formatDate(ts) {
     if (!ts) return '';
-    return new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    return new Date(ts).toLocaleDateString($dateLocale, { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
   // Lien vers mode pas-à-pas
@@ -112,25 +114,25 @@
 </script>
 
 <svelte:head>
-  <title>{recipe ? recipe.name : 'Recette'} — CPLQ</title>
+  <title>{recipe ? recipe.name : $_('recipe.loading')} — CPLQ</title>
 </svelte:head>
 
 {#if loading}
-  <p class="text-muted">Chargement…</p>
+  <p class="text-muted">{$_('recipe.loading')}</p>
 {:else if error}
   <div class="error-state">
-    <p>{error}</p>
-    <a href="/" class="btn btn-secondary mt-2">Retour à l'accueil</a>
+    <p>{$_(error)}</p>
+    <a href="/" class="btn btn-secondary mt-2">{$_('recipe.back_home')}</a>
   </div>
 {:else}
   <div class="recipe-page">
 
     <!-- Header -->
     <div class="page-header">
-      <a href="/" class="back-link">← Recettes</a>
+      <a href="/" class="back-link">{$_('recipe.back')}</a>
       <div class="header-actions">
-        <a href={`/recipe/${recipe.id}/edit`} class="btn btn-secondary btn-sm">Modifier</a>
-        <button type="button" class="btn btn-danger btn-sm" on:click={handleDelete}>Supprimer</button>
+        <a href={`/recipe/${recipe.id}/edit`} class="btn btn-secondary btn-sm">{$_('recipe.edit')}</a>
+        <button type="button" class="btn btn-danger btn-sm" on:click={handleDelete}>{$_('recipe.delete')}</button>
       </div>
     </div>
 
@@ -152,12 +154,12 @@
     <!-- Infos rapides -->
     <div class="recipe-meta">
       {#if recipe.proofingTime}
-        <div class="meta-item"><span class="meta-label">Pousse</span><span>{recipe.proofingTime}</span></div>
+        <div class="meta-item"><span class="meta-label">{$_('recipe.proofing')}</span><span>{recipe.proofingTime}</span></div>
       {/if}
       {#if recipe.bakingTime}
-        <div class="meta-item"><span class="meta-label">Cuisson</span><span>{recipe.bakingTime}</span></div>
+        <div class="meta-item"><span class="meta-label">{$_('recipe.baking')}</span><span>{recipe.bakingTime}</span></div>
       {/if}
-      <div class="meta-item"><span class="meta-label">Évaporation</span><span>{recipe.evaporationRate}%</span></div>
+      <div class="meta-item"><span class="meta-label">{$_('recipe.evaporation')}</span><span>{recipe.evaporationRate}%</span></div>
     </div>
 
     {#if recipe.notes}
@@ -167,7 +169,7 @@
     <hr />
 
     <!-- Ingrédients (lecture seule) -->
-    <div class="section-title">Ingrédients (% boulangers)</div>
+    <div class="section-title">{$_('recipe.ingredients_title')}</div>
     <ul class="ingredient-list">
       {#each (trialMode ? trialIngredients : recipe.ingredients) as ing, i}
         <li class="ingredient-item">
@@ -196,19 +198,19 @@
     <!-- Bouton mode essai -->
     {#if !trialMode}
       <button type="button" class="btn btn-ghost btn-sm trial-btn" on:click={startTrial}>
-        🧪 Modifier pour essai
+        {$_('recipe.trial_btn')}
       </button>
     {:else}
       <div class="trial-actions">
-        <button type="button" class="btn btn-secondary btn-sm" on:click={cancelTrial}>Annuler l'essai</button>
-        <button type="button" class="btn btn-primary btn-sm" on:click={saveTrialAsNew}>Sauvegarder comme nouvelle recette</button>
+        <button type="button" class="btn btn-secondary btn-sm" on:click={cancelTrial}>{$_('recipe.cancel_trial')}</button>
+        <button type="button" class="btn btn-primary btn-sm" on:click={saveTrialAsNew}>{$_('recipe.save_trial')}</button>
       </div>
     {/if}
 
     <hr />
 
     <!-- Calculateur -->
-    <div class="section-title">Calculateur</div>
+    <div class="section-title">{$_('recipe.calculator')}</div>
 
     <div class="calc-mode-switch">
       <button
@@ -216,13 +218,13 @@
         class="mode-btn"
         class:active={calcMode === 'bread'}
         on:click={() => { calcMode = 'bread'; inputValue = 800; }}
-      >Poids de pain voulu</button>
+      >{$_('recipe.mode_bread')}</button>
       <button
         type="button"
         class="mode-btn"
         class:active={calcMode === 'flour'}
         on:click={() => { calcMode = 'flour'; inputValue = 300; }}
-      >Farine disponible</button>
+      >{$_('recipe.mode_flour')}</button>
     </div>
 
     <div class="calc-input-row">
@@ -232,7 +234,7 @@
         min="1"
         step="1"
         class="calc-input"
-        aria-label={calcMode === 'bread' ? 'Poids de pain souhaité en grammes' : 'Farine disponible en grammes'}
+        aria-label={calcMode === 'bread' ? $_('recipe.mode_bread') : $_('recipe.mode_flour')}
       />
       <span class="calc-unit">g</span>
     </div>
@@ -241,7 +243,7 @@
       <div class="calc-results card">
         {#if calcMode === 'flour'}
           <div class="result-total">
-            <span>Pain obtenu</span>
+            <span>{$_('recipe.bread_result')}</span>
             <strong>{trialResult.breadWeight} g</strong>
           </div>
           <hr />
@@ -257,7 +259,7 @@
         {#if calcMode === 'bread'}
           <hr />
           <div class="result-total">
-            <span>Pâte totale</span>
+            <span>{$_('recipe.dough_total')}</span>
             <strong>{trialResult.doughWeight} g</strong>
           </div>
         {/if}
@@ -266,12 +268,12 @@
 
     <!-- Actions calculateur -->
     <div class="calc-actions">
-      <a href={stepsHref} class="btn btn-primary">▶ Pas-à-pas</a>
+      <a href={stepsHref} class="btn btn-primary">{$_('recipe.steps_btn')}</a>
       <button type="button" class="btn btn-secondary" on:click={() => (showHistoryModal = true)}>
-        Sauvegarder la fournée
+        {$_('recipe.save_batch')}
       </button>
       <button type="button" class="btn btn-ghost" on:click={() => (showQRModal = true)}>
-        Partager ↗
+        {$_('recipe.share')}
       </button>
     </div>
 
@@ -285,15 +287,15 @@
   <div class="modal-overlay" on:click|self={() => (showHistoryModal = false)}>
     <div class="modal-box">
       <div class="modal-header">
-        <span class="modal-title">Sauvegarder la fournée</span>
+        <span class="modal-title">{$_('batch_modal.title')}</span>
         <button type="button" class="btn btn-ghost" on:click={() => (showHistoryModal = false)}>✕</button>
       </div>
       <div class="form-group">
-        <label for="hist-note">Note (optionnel)</label>
-        <textarea id="hist-note" bind:value={historyNote} placeholder="Résultat, observations…" rows="3"></textarea>
+        <label for="hist-note">{$_('batch_modal.note_label')}</label>
+        <textarea id="hist-note" bind:value={historyNote} placeholder={$_('batch_modal.note_placeholder')} rows="3"></textarea>
       </div>
       <div class="form-group">
-        <label>Photo (optionnel)</label>
+        <label>{$_('batch_modal.photo_label')}</label>
         <input type="file" accept="image/*" on:change={(e) => {
           const file = e.target.files?.[0];
           if (!file) return;
@@ -303,9 +305,9 @@
         }} />
       </div>
       <div class="modal-actions">
-        <button type="button" class="btn btn-secondary" on:click={() => (showHistoryModal = false)}>Annuler</button>
+        <button type="button" class="btn btn-secondary" on:click={() => (showHistoryModal = false)}>{$_('batch_modal.cancel')}</button>
         <button type="button" class="btn btn-primary" on:click={saveToHistory} disabled={savingHistory}>
-          {savingHistory ? 'Sauvegarde…' : 'Enregistrer'}
+          {savingHistory ? $_('batch_modal.saving') : $_('batch_modal.save')}
         </button>
       </div>
     </div>
@@ -321,7 +323,7 @@
 {#if showImportModal}
   <ImportModal
     on:close={() => (showImportModal = false)}
-    on:imported={(e) => { showImportModal = false; alert(`Recette "${e.detail}" importée !`); }}
+    on:imported={(e) => { showImportModal = false; alert(get(_)('recipe.imported', { values: { name: e.detail } })); }}
   />
 {/if}
 

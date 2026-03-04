@@ -45,6 +45,6 @@ declare module "$app/types" {
 		};
 		Pathname(): "/" | "/history" | "/recipe/new" | `/recipe/${string}` & {} | `/recipe/${string}/edit` & {} | `/recipe/${string}/steps` & {} | "/settings";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
-		Asset(): "/favicon.png" | "/icons/PLACEHOLDER.md" | "/manifest.json" | string & {};
+		Asset(): "/CNAME" | "/favicon.ico" | "/favicon.png" | "/icons/PLACEHOLDER.md" | "/icons/favicon-16.png" | "/icons/favicon-32.png" | "/icons/icon-192.png" | "/icons/icon-512.png" | "/icons/icon.svg" | "/manifest.json" | string & {};
 	}
 }

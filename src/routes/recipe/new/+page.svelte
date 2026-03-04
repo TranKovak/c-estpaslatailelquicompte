@@ -3,6 +3,7 @@
   import RecipeForm from '$lib/components/RecipeForm.svelte';
   import { saveRecipe } from '$lib/db.js';
   import { loadRecipes } from '$lib/stores.js';
+  import { _ } from '$lib/i18n/index.js';
 
   let saving = false;
 
@@ -20,12 +21,12 @@
 </script>
 
 <svelte:head>
-  <title>Nouvelle recette — CPLQ</title>
+  <title>{$_('new.title')} — CPLQ</title>
 </svelte:head>
 
 <div class="page-header">
-  <a href="/" class="back-link">← Retour</a>
-  <h1 class="page-title">Nouvelle recette</h1>
+  <a href="/" class="back-link">{$_('new.back')}</a>
+  <h1 class="page-title">{$_('new.heading')}</h1>
 </div>
 
 <RecipeForm on:save={handleSave} {saving} />
