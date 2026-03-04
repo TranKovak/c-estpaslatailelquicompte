@@ -7,7 +7,7 @@ import "@sveltejs/kit/internal/server";
 import "../../../../../chunks/root.js";
 import "../../../../../chunks/state.svelte.js";
 import "idb";
-import { a as $format } from "../../../../../chunks/index3.js";
+import { b as $format } from "../../../../../chunks/index3.js";
 function onDestroy(fn) {
   /** @type {SSRContext} */
   ssr_context.r.on_destroy(fn);

@@ -1,4 +1,4 @@
-import { i as fallback, d as attr, j as bind_props, e as escape_html, c as ensure_array_like, b as slot, s as store_get, u as unsubscribe_stores, k as invalid_default_snippet, h as head } from "../../../../chunks/index2.js";
+import { i as fallback, c as attr, j as bind_props, e as escape_html, a as ensure_array_like, d as slot, s as store_get, u as unsubscribe_stores, k as invalid_default_snippet, h as head } from "../../../../chunks/index2.js";
 import "@sveltejs/kit/internal";
 import "../../../../chunks/exports.js";
 import "../../../../chunks/utils.js";
@@ -7,7 +7,7 @@ import "@sveltejs/kit/internal/server";
 import "../../../../chunks/root.js";
 import "../../../../chunks/state.svelte.js";
 /* empty css                                                          */
-import { a as $format } from "../../../../chunks/index3.js";
+import { b as $format } from "../../../../chunks/index3.js";
 import "idb";
 import "../../../../chunks/stores2.js";
 function IngredientRow($$renderer, $$props) {

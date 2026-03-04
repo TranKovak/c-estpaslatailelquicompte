@@ -1,6 +1,6 @@
 import { h as head, e as escape_html, s as store_get, u as unsubscribe_stores } from "../../../chunks/index2.js";
 import "idb";
-import { a as $format } from "../../../chunks/index3.js";
+import { b as $format } from "../../../chunks/index3.js";
 import "clsx";
 function _page($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {

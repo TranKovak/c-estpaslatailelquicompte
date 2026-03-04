@@ -18,6 +18,12 @@
   --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
 }
 
+/* Font elfique (Quenya) */
+body.lang-qya {
+  font-family: 'Uncial Antiqua', serif;
+  letter-spacing: 0.02em;
+}
+
 /* Thème sombre */
 @media (prefers-color-scheme: dark) {
   :root {

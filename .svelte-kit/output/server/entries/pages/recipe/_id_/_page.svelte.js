@@ -8,7 +8,7 @@ import "../../../../chunks/root.js";
 import "../../../../chunks/state.svelte.js";
 import "idb";
 import "../../../../chunks/stores2.js";
-import { a as $format } from "../../../../chunks/index3.js";
+import { b as $format } from "../../../../chunks/index3.js";
 import "qrcode";
 import "jsqr";
 import "../../../../chunks/ImportModal.svelte_svelte_type_style_lang.js";

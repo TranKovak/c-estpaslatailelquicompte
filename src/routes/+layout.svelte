@@ -4,6 +4,19 @@
   import { onMount } from 'svelte';
   import { setupI18n, _, locale } from '$lib/i18n/index.js';
   import { isLoading } from 'svelte-i18n';
+  import { browser } from '$app/environment';
+
+  const langs = [
+    { code: 'fr', flag: '🇫🇷' },
+    { code: 'en', flag: '🇬🇧' },
+    { code: 'es', flag: '🇪🇸' },
+    { code: 'qya', flag: '🧝' }
+  ];
+
+  // Font elfique sur le body quand Quenya est actif
+  $: if (browser) {
+    document.body.classList.toggle('lang-qya', $locale === 'qya');
+  }
 
   setupI18n();
 
@@ -50,6 +63,17 @@
   <nav class="navbar">
     <div class="container">
       <a href="/" class="nav-brand">🍞 CPLQ <span class="nav-version">v{__APP_VERSION__}</span></a>
+      <div class="lang-flags">
+        {#each langs as lang}
+          <button
+            type="button"
+            class="lang-flag"
+            class:active={$locale === lang.code}
+            on:click={() => locale.set(lang.code)}
+            aria-label={lang.code}
+          >{lang.flag}</button>
+        {/each}
+      </div>
       <div class="nav-links">
         <a href="/" class:active={$page.url.pathname === '/'}>{$_('nav.recipes')}</a>
         <a href="/history" class:active={$page.url.pathname === '/history'}>{$_('nav.history')}</a>
@@ -130,6 +154,32 @@
   .nav-links a.active {
     color: var(--accent);
     border-bottom-color: var(--accent);
+  }
+
+  .lang-flags {
+    display: flex;
+    gap: 0.15rem;
+  }
+
+  .lang-flag {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0.1rem 0.2rem;
+    border-radius: var(--radius);
+    opacity: 0.4;
+    transition: opacity 0.15s, transform 0.1s;
+    line-height: 1;
+  }
+
+  .lang-flag:hover {
+    opacity: 0.8;
+  }
+
+  .lang-flag.active {
+    opacity: 1;
+    transform: scale(1.2);
   }
 
   .btn-install {

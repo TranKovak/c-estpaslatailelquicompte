@@ -1,4 +1,4 @@
-import { h as head, d as attr, s as store_get, e as escape_html, u as unsubscribe_stores } from "../../../../../chunks/index2.js";
+import { h as head, c as attr, s as store_get, e as escape_html, u as unsubscribe_stores } from "../../../../../chunks/index2.js";
 import "@sveltejs/kit/internal";
 import "../../../../../chunks/exports.js";
 import "../../../../../chunks/utils.js";
@@ -7,7 +7,7 @@ import "../../../../../chunks/root.js";
 import "../../../../../chunks/state.svelte.js";
 import { p as page } from "../../../../../chunks/stores.js";
 /* empty css                                                             */
-import { a as $format } from "../../../../../chunks/index3.js";
+import { b as $format } from "../../../../../chunks/index3.js";
 import "idb";
 import "../../../../../chunks/stores2.js";
 function _page($$renderer, $$props) {
