@@ -1,17 +1,67 @@
 <script>
   import '../app.css';
   import { page } from '$app/stores';
+  import { onMount } from 'svelte';
+
+  let deferredPrompt = null;
+  let showInstall = false;
+  let isIos = false;
+  let iosHint = false;
+
+  onMount(() => {
+    // iOS detection
+    isIos = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+
+    if (isIos && !isStandalone) {
+      showInstall = true;
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      showInstall = true;
+    });
+
+    window.addEventListener('appinstalled', () => {
+      showInstall = false;
+      deferredPrompt = null;
+    });
+  });
+
+  async function handleInstall() {
+    if (isIos) {
+      iosHint = !iosHint;
+      return;
+    }
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') showInstall = false;
+    deferredPrompt = null;
+  }
 </script>
 
 <div class="app-shell">
   <nav class="navbar">
     <div class="container">
-      <a href="/" class="nav-brand">🍞 CPLQ</a>
+      <a href="/" class="nav-brand">🍞 CPLQ <span class="nav-version">v{__APP_VERSION__}</span></a>
       <div class="nav-links">
         <a href="/" class:active={$page.url.pathname === '/'}>Recettes</a>
         <a href="/history" class:active={$page.url.pathname === '/history'}>Historique</a>
         <a href="/settings" class:active={$page.url.pathname === '/settings'}>Paramètres</a>
+        {#if showInstall}
+          <button type="button" class="btn-install" on:click={handleInstall}>
+            ⬇ Installer
+          </button>
+        {/if}
       </div>
+
+      {#if iosHint}
+        <div class="ios-hint">
+          Appuie sur <strong>Partager</strong> puis <strong>Sur l'écran d'accueil</strong>
+        </div>
+      {/if}
     </div>
   </nav>
 
@@ -52,6 +102,13 @@
     text-decoration: none;
   }
 
+  .nav-version {
+    font-size: 0.65rem;
+    font-weight: 400;
+    opacity: 0.6;
+    vertical-align: middle;
+  }
+
   .nav-links {
     display: flex;
     gap: 1.25rem;
@@ -70,6 +127,26 @@
   .nav-links a.active {
     color: var(--accent);
     border-bottom-color: var(--accent);
+  }
+
+  .btn-install {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.25rem 0.65rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .ios-hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    padding: 0.4rem 0;
+    text-align: center;
+    border-top: 1px solid var(--border);
   }
 
   .main-content {
