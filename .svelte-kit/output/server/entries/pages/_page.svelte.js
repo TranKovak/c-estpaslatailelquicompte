@@ -1,4 +1,4 @@
-import { s as store_get, h as head, e as escape_html, a as ensure_array_like, b as attr_class, c as attr, u as unsubscribe_stores } from "../../chunks/index2.js";
+import { s as store_get, h as head, e as escape_html, c as ensure_array_like, b as attr_class, a as attr, u as unsubscribe_stores } from "../../chunks/index2.js";
 import "@sveltejs/kit/internal";
 import "../../chunks/exports.js";
 import "../../chunks/utils.js";

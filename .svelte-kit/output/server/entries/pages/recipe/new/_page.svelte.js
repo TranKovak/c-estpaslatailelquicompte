@@ -1,4 +1,4 @@
-import { i as fallback, c as attr, j as bind_props, e as escape_html, a as ensure_array_like, d as slot, s as store_get, u as unsubscribe_stores, k as invalid_default_snippet, h as head } from "../../../../chunks/index2.js";
+import { i as fallback, a as attr, j as bind_props, e as escape_html, c as ensure_array_like, d as slot, s as store_get, u as unsubscribe_stores, k as invalid_default_snippet, h as head } from "../../../../chunks/index2.js";
 import "@sveltejs/kit/internal";
 import "../../../../chunks/exports.js";
 import "../../../../chunks/utils.js";
